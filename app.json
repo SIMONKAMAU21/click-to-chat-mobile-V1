@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "click to chat",
+    "slug": "click-to-chat",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/click.png",
+    "scheme": "clicktochatmobilev1",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/click.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.jahnnet.clicktochat"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/click.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fc1744de-221a-4982-b6b9-de7c15374bc6"
+      }
+    },
+    "owner": "jahnnet",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/fc1744de-221a-4982-b6b9-de7c15374bc6"
+    }
+  }
+}
