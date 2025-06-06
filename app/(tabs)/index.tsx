@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -11,7 +12,6 @@ import {
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { FontAwesome6 } from "@expo/vector-icons";
 import CountryPicker, {
   Country,
@@ -19,8 +19,6 @@ import CountryPicker, {
 } from "react-native-country-picker-modal";
 
 export default function TabTwoScreen() {
-  const colorScheme = useColorScheme();
-
   const [countryCode, setCountryCode] = useState<CountryCode>("KE"); // Default to Kenya
   const [callingCode, setCallingCode] = useState("254");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -33,10 +31,15 @@ export default function TabTwoScreen() {
   const openWhatsApp = () => {
     const cleaned = phoneNumber.replace(/\D/g, "");
     if (cleaned.length >= 9) {
-      Linking.openURL(`https://wa.me/${callingCode}${cleaned}`);
-      setPhoneNumber("")
+      Linking.openURL(
+        `https://wa.me/${callingCode}${cleaned}?text=God Bless You👋`
+      );
+      setPhoneNumber("");
     } else {
-      alert("Please enter a valid phone number.");
+      ToastAndroid.show(
+        "Please enter a valid phone number.",
+        ToastAndroid.SHORT
+      );
     }
   };
 
@@ -44,12 +47,6 @@ export default function TabTwoScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#25D366", dark: "#25D366" }}
       headerImage={
-        // <IconSymbol
-        //   size={310}
-        //   color="#808080"
-        //   name="chevron.left.forwardslash.chevron.right"
-        //   style={styles.headerImage}
-        // />
         <FontAwesome6 name="whatsapp" size={250} style={styles.headerImage} />
       }
     >
@@ -59,34 +56,22 @@ export default function TabTwoScreen() {
 
       {/* WhatsApp Section */}
       <View style={styles.whatsAppContainer}>
+        <Text style={styles.label}>Enter Phone Number:</Text>
         <View style={styles.row}>
-          {/* <CountryPicker
-            withCallingCode
-            withFlag
-            withFilter
-            countryCode={countryCode}
-            onSelect={onSelect}
-            visible={visible}
-            onClose={() => setVisible(false)}
-            onOpen={() => setVisible(true)}
-          /> */}
-
           <Text style={styles.code}>+{callingCode}</Text>
-          <View style={styles.column}>
-            <Text style={styles.label}>Enter Phone Number:</Text>
+          {/* <View style={styles.column}> */}
 
-            <TextInput
-              style={styles.input}
-              placeholder="712345678"
-              keyboardType="phone-pad"
-              returnKeyType="done"
-              // value={`${callingCode} ${phoneNumber}`}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-            />
-          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="712345678"
+            keyboardType="phone-pad"
+            returnKeyType="done"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+          />
+          {/* </View> */}
         </View>
-        
+
         <CountryPicker
           withCallingCode
           withFlag
@@ -95,7 +80,6 @@ export default function TabTwoScreen() {
           countryCode={countryCode}
           onSelect={onSelect}
         />
-        {/* <AntDesign name="downcircleo" size={24} color="white" /> */}
         <TouchableOpacity style={styles.button} onPress={openWhatsApp}>
           <Text style={styles.buttonText}>Open in WhatsApp</Text>
         </TouchableOpacity>
@@ -103,14 +87,18 @@ export default function TabTwoScreen() {
 
       {/* Existing Content */}
       {/* ...keep rest of your Collapsible content here... */}
-      <View style={{alignSelf:"baseline",flex:1, marginTop:"50%"}}>
+      <View style={{ alignSelf: "baseline", flex: 1, marginTop: "50%" }}>
         <ThemedText type="link">
-          This app allows users to quickly start a WhatsApp or SMS conversation by entering a phone number. It supports selecting a country code (optional) and generates a direct link to open the chat in WhatsApp or the default messaging app without needing to save the number in contacts. Ideal for fast, contactless communication.
+          This app allows users to quickly start a WhatsApp or SMS conversation
+          by entering a phone number. It supports selecting a country code
+          (optional) and generates a direct link to open the chat in WhatsApp or
+          the default messaging app without needing to save the number in
+          contacts. Ideal for fast, contactless communication.
         </ThemedText>
-              <ThemedText type="subtitle"> Simon Kamu @{new Date().getFullYear()} </ThemedText>
-
+        <ThemedText type="subtitle">
+          Simon Kamu @{new Date().getFullYear()}{" "}
+        </ThemedText>
       </View>
-
     </ParallaxScrollView>
   );
 }
@@ -131,46 +119,56 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     padding: 10,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#25D366",
-    // paddingHorizontal: 20,
-    // backgroundColor:"#fff"
+    backgroundColor: "rgba(29, 29, 31,1)",
+    shadowColor: "#25D366",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 50,
+    elevation: 75, // Android
+    alignItems:"center"
+
   },
   label: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 10,
     fontWeight: "500",
     color: "#fff",
-    width: "100%",
+    width: "80%",
+    
   },
   code: {
     fontSize: 16,
     paddingHorizontal: 8,
     height: 45,
     lineHeight: 45,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(21, 21, 22, 0.8)",
+    color: "white",
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     borderColor: "#ccc",
     borderWidth: 1,
-    marginTop: "8%",
     borderRightWidth: 0, // Merge into input
     textAlignVertical: "center",
   },
   country: {
     paddingHorizontal: 8,
-    height: 45,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    left:"40%",
-    width:"20%",
+    // left: "40%",
+    width: "10%",
     marginTop: "8%",
+    alignItems: "center",
+    shadowColor: "green",
+    justifyContent: "center",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 50,
+    elevation: 5, // Android
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
+    // justifyContent: "center",
     gap: 10,
   },
   column: {
@@ -184,19 +182,23 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 45,
-    width: "100%",
+    width: "80%",
+    cursor: "auto",
+    maxWidth: 455,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     borderColor: "#ccc",
     borderWidth: 1,
+    color: "white",
     borderLeftWidth: 0, // Merge into code box
     paddingHorizontal: 10,
-    backgroundColor: "white",
+    backgroundColor: "rgba(21, 21, 22, 0.8)",
   },
   button: {
     backgroundColor: "#25D366",
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 20,
+    paddingHorizontal:20,
     marginTop: "20%",
     alignItems: "center",
   },

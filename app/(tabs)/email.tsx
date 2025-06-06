@@ -12,74 +12,51 @@ import {
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useColorScheme } from "@/hooks/useColorScheme.web";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Country, CountryCode } from "react-native-country-picker-modal";
+import { Zocial } from "@expo/vector-icons";
 
 export default function TabTwoScreen() {
-  const colorScheme = useColorScheme();
+  const [email, setEmail] = useState("");
 
-  const [countryCode, setCountryCode] = useState<CountryCode>("KE"); // Default to Kenya
-  const [callingCode, setCallingCode] = useState("254");
-  const [phoneNumber, setPhoneNumber] = useState("");
-
-  const onSelect = (country: Country) => {
-    setCountryCode(country.cca2);
-    setCallingCode(country.callingCode[0]);
-  };
-
-  const openMessages = () => {
-    const cleaned = phoneNumber.replace(/\D/g, "");
-    if (cleaned.length >= 10) {
-      Linking.openURL(`sms:${cleaned}`);
-      setPhoneNumber("");
-    } else {
-      ToastAndroid.show(
-        "Please enter a valid phone number.",
-        ToastAndroid.SHORT
-      );
-    }
+  const openMail = () => {
+    Linking.openURL(`mailto:${email}?subject=Hello&body=This is the message`);
+    setEmail("");
   };
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#007AFF", dark: "#007AFF" }}
+      headerBackgroundColor={{ light: "#25D366", dark: "teal" }}
       headerImage={
-        <MaterialIcons
-          name="message"
-          size={250}
-          color="black"
-          style={styles.headerImage}
-        />
+        // <FontAwesome6 name="telegram" size={250} style={styles.headerImage} />
+        <Zocial name="email" size={250} style={styles.headerImage} />
       }
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="link">
-          Open On Message {new Date().getDate().toLocaleString()}
+          Enter Email to open a chat on Email{" "}
+          {new Date().getDate().toLocaleString()}
         </ThemedText>
       </ThemedView>
 
       {/* WhatsApp Section */}
       <View style={styles.whatsAppContainer}>
-        <Text style={styles.label}>Enter Phone Number:</Text>
+        <Text style={styles.label}> Email :</Text>
 
         <View style={styles.row}>
-          <Text style={styles.code}>+{callingCode}</Text>
+          {/* <Text style={styles.code}>+{callingCode}</Text> */}
 
           <TextInput
             style={styles.input}
-            placeholder="712345678"
-            keyboardType="phone-pad"
+            placeholder="johndoe@gmail.com"
+            keyboardType="email-address"
             returnKeyType="done"
-            // value={`${callingCode} ${phoneNumber}`}
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={openMessages}>
-          <MaterialIcons name="message" size={24} color="white" />{" "}
-          <Text style={styles.buttonText}>Open in Message</Text>
+        <TouchableOpacity style={styles.button} onPress={openMail}>
+          <Zocial name="email" size={25} color={"white"} />
+          <Text style={styles.buttonText}>Open on Mail</Text>
         </TouchableOpacity>
       </View>
 
@@ -115,14 +92,14 @@ const styles = StyleSheet.create({
     marginTop: "20%",
     marginBottom: 30,
     padding: 10,
+    alignItems: "center",
+    // maxHeight:900,
     borderRadius: 10,
     backgroundColor: "rgba(29, 29, 31,1)",
-    shadowColor: "#007AFF",
+    shadowColor: "teal",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 50,
-    alignItems: "center",
-
     elevation: 75, // Android
   },
   label: {
@@ -137,14 +114,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     height: 45,
     lineHeight: 45,
-    backgroundColor: "rgba(21, 21, 22, 0.8)",
-    color: "white",
+    backgroundColor: "#fff",
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRightWidth: 0, // Merge into input
     textAlignVertical: "center",
+  },
+  country: {
+    paddingHorizontal: 8,
+    height: 45,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    left: "40%",
+    width: "20%",
+    marginTop: "8%",
   },
   row: {
     flexDirection: "row",
@@ -160,17 +147,17 @@ const styles = StyleSheet.create({
     // flex:2
   },
   input: {
-    flex: 1,
+   flex: 1,
     height: 45,
-    width: "80%",
+    width: "90%",
     cursor: "auto",
-    maxWidth: 455,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
+    maxWidth: 500,
+    // borderTopRightRadius: 10,
+    // borderBottomRightRadius: 10,
     borderColor: "#ccc",
     borderWidth: 1,
+    borderRadius: 10,
     color: "white",
-    borderLeftWidth: 0, // Merge into code box
     paddingHorizontal: 10,
     backgroundColor: "rgba(21, 21, 22, 0.8)",
   },
@@ -178,7 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#007AFF",
     paddingVertical: 10,
     borderRadius: 20,
-    marginTop: "30%",
+    marginTop: "20%",
     paddingHorizontal: 20,
     flexDirection: "row",
     flex: 1,
